@@ -9,17 +9,13 @@ library(readxl)
 ## getting the files in project directory
 #dir()
 
-## importing the data set
-#demo <- read_excel("demo.xlsx")
 
-## looping
-
-## getting the columns of the data
-#col_names <- colnames(demo)
+## getting the sheet name
+sheet_name <- excel_sheets("analysis.xlsx")
 
 
 
-## a function
+## a function to plot the graph
 plot_graph <- function(demo) {
   ## changing the data format so as to plot the data well
   demo <- demo %>% 
@@ -30,32 +26,28 @@ plot_graph <- function(demo) {
     geom_bar(stat = "identity", position = position_stack(reverse = FALSE),
              color = "black") +
     coord_flip() +
-    geom_text(aes(label = paste(percent*100,"%")), position = position_stack(vjust = 0.5)) +
+    geom_text(aes(label = paste(percent*100,"%")), position = position_stack(vjust = 0.5),
+              size = 3) +
     theme(legend.position = "bottom",panel.background = element_rect(fill = "white"),
           axis.text.x = element_blank(),
           axis.ticks = element_blank(),
           axis.title = element_blank(),
           legend.title = element_blank()) +
     scale_fill_manual(values = c("#FFF68F","#FF6A6A","#CDC9C9","#5CACEE","#FFFF00"))
-  for (i in seq(1,length(excel_sheets("analysis.xlsx")))) {
-    
-  }
-  ggsave("plot.png",
+  ggsave(paste("plot","",sheet,".png"),
          plot = last_plot(),
          width = 10, height = 6, 
          units = "in",
          dpi = 500)
 }
 
-
-## list of the sheets in the excel_work_book
-mylist <- lapply(1:length(excel_sheets("analysis.xlsx")), function(i) read_excel("analysis.xlsx", sheet = i))
-
-
-## a for loop to loop to the sheets and plot individual graph
-for (i in mylist) {
-  plot_graph(i)
+## a for loop for looping through sheets
+for (sheet in sheet_name) {
+  demo <- read_excel("analysis.xlsx",sheet = sheet)
+  plot_graph(demo)
 }
+
+
 
 
 
