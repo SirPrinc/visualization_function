@@ -13,8 +13,6 @@ library(readxl)
 ## getting the sheet name
 sheet_name <- excel_sheets("analysis.xlsx")
 
-
-
 ## a function to plot the graph
 plot_graph <- function(demo) {
   ## changing the data format so as to plot the data well
@@ -32,13 +30,9 @@ plot_graph <- function(demo) {
           axis.text.x = element_blank(),
           axis.ticks = element_blank(),
           axis.title = element_blank(),
-          legend.title = element_blank()) +
+          legend.title = element_blank(),
+          axis.text.y = element_text(vjust = -12)) +
     scale_fill_manual(values = c("#FFF68F","#FF6A6A","#CDC9C9","#5CACEE","#FFFF00"))
-  ggsave(paste("plot","",sheet,".png"),
-         plot = last_plot(),
-         width = 10, height = 6, 
-         units = "in",
-         dpi = 500)
 }
 
 ## a for loop for looping through sheets
